@@ -37,13 +37,22 @@ def get_distance():
   time.sleep(0.00001)
   GPIO.output(TRIG, False)
   
+  count = 0
+  limit = 60
   pulse_start = time.time()
   while GPIO.input(ECHO)==0:
     pulse_start = time.time()
+    count += 1
+    if count > limit:
+      raise Exception('Ping Exception')
   
+  count = 0
   pulse_end = time.time()
   while GPIO.input(ECHO)==1:
     pulse_end = time.time()
+    count += 1
+    if count > limit:
+      raise Exception('Pong Exception')
   
   pulse_duration = pulse_end - pulse_start
   
@@ -106,12 +115,16 @@ def main():
   rolling_width = 5
 
   while True:
-    distance = get_distance() 
-    distance_list.insert(0, distance)
-    distance_list = distance_list[:rolling_width]
-    average = get_average(distance_list)
-    print average
-    set_lights(average)
+    try:
+      distance = get_distance() 
+      distance_list.insert(0, distance)
+      distance_list = distance_list[:rolling_width]
+      average = get_average(distance_list)
+      print average
+      set_lights(average)
+    except Exception as error:
+      print error
+      
 
 init()  
 main()
