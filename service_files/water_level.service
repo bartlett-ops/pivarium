@@ -2,7 +2,7 @@
 Description=Water Level Service
 
 [Service]
-ExecStart=/usr/bin/env python /opt/pivarium/svc/water_level.py
+ExecStart=/usr/bin/env python -u /opt/pivarium/src/water_level.py
 KillMode=process
 Restart=on-failure
 
