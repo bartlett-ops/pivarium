@@ -1,0 +1,10 @@
+[Unit]
+Description=Water Level Service
+
+[Service]
+ExecStart=/usr/bin/env python /opt/pivarium/svc/water_level.py
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
